@@ -1,0 +1,2 @@
+gst-launch udpsrc port=1234 ! "application/x-rtp, payload=127" ! rtph264depay ! avdec_h264 ! glimagesink
+gst-launch avfvideosrc ! video/x-raw,width=640,height=480 ! x264enc pass=qual quantizer=20 tune=zerolatency ! rtph264pay ! udpsink host=192.168.0.172 port=1234
