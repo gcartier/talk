@@ -1,7 +1,4 @@
-dsp="webrtcdsp \
-        echo-cancel=false \
-            echo-suppression-level=high \
-            noise-suppression=true"
+dsp="webrtcdsp"
 probe="webrtcechoprobe"
 
 #dsp=identity
