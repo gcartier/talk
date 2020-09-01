@@ -15,7 +15,7 @@ gst-launch \
         "audio/x-raw, rate=48000" ! \
         vorbisenc ! \
 	queue ! \
-	rtpvorbispay ! \
+	rtpvorbispay config-interval=1 ! \
         udpsink host=$UDPDEST port=5001 \
     udpsrc port=5001 ! \
         "application/x-rtp, payload=127, media=audio, clock-rate=48000, encoding-name=VORBIS" ! \
