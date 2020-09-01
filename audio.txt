@@ -1,8 +1,10 @@
 gst-launch \
     osxaudiosrc ! \
+        audioresample ! \
+        webrtcdsp ! \
         audioconvert ! \
         audioresample ! \
-        "audio/x-raw, rate=48000" ! \
+        "audio/x-raw, format=F32LE, rate=48000" ! \
         vorbisenc ! \
         queue ! \
         rtpvorbispay config-interval=1 ! \
@@ -12,4 +14,6 @@ gst-launch \
         rtpvorbisdepay ! \
         vorbisdec ! \
         queue ! \
+        webrtcechoprobe ! \
+        audioresample ! \
         osxaudiosink async=false
