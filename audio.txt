@@ -1,10 +1,19 @@
+dsp="webrtcdsp \
+        echo-cancel=false \
+            echo-suppression-level=high \
+            noise-suppression=true"
+probe="webrtcechoprobe"
+
+#dsp=identity
+#probe=identity
+
 gst-launch \
     osxaudiosrc ! \
         audioresample ! \
-        webrtcdsp ! \
+	$dsp ! \
         audioconvert ! \
         audioresample ! \
-        "audio/x-raw, format=F32LE, rate=48000" ! \
+        "audio/x-raw, format=F32LE, layout=interleaved, rate=48000, channels=2" ! \
         vorbisenc ! \
         queue ! \
         rtpvorbispay config-interval=1 ! \
@@ -13,7 +22,10 @@ gst-launch \
         "application/x-rtp, payload=127, media=audio, clock-rate=48000, encoding-name=VORBIS" ! \
         rtpvorbisdepay ! \
         vorbisdec ! \
+        audioconvert ! \
+        audioresample ! \
+        audio/x-raw, format=S16LE, layout=interleaved, rate=48000, channels=2 ! \
         queue ! \
-        webrtcechoprobe ! \
+        $probe ! \
         audioresample ! \
         osxaudiosink async=false
