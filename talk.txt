@@ -14,8 +14,11 @@ gst-launch \
     osxaudiosrc ! \
         vorbisenc ! \
 	queue ! \
+	rtpvorbispay ! \
         udpsink host=$UDPDEST port=5001 \
     udpsrc port=5001 ! \
+        "application/x-rtp, payload=127" ! \
+        rtpvorbisdepay ! \
         vorbisdec ! \
 	queue ! \
         osxaudiosink async=false
