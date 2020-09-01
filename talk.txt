@@ -1,27 +1,27 @@
 gst-launch \
     avfvideosrc ! \
         video/x-raw,width=640,height=480 ! \
-	x264enc pass=qual quantizer=20 tune=zerolatency ! \
-	queue ! \
-	rtph264pay ! \
+        x264enc pass=qual quantizer=20 tune=zerolatency ! \
+        queue ! \
+        rtph264pay ! \
         udpsink host=$UDPDEST port=5000 \
     udpsrc port=5000 ! \
         "application/x-rtp, payload=127" ! \
-	rtph264depay ! \
-	avdec_h264 ! \
-	queue ! \
-	glimagesink async=false \
+        rtph264depay ! \
+        avdec_h264 ! \
+        queue ! \
+        glimagesink async=false \
     osxaudiosrc ! \
-	audioconvert ! \
-	audioresample ! \
+        audioconvert ! \
+        audioresample ! \
         "audio/x-raw, rate=48000" ! \
         vorbisenc ! \
-	queue ! \
-	rtpvorbispay config-interval=1 ! \
+        queue ! \
+        rtpvorbispay config-interval=1 ! \
         udpsink host=$UDPDEST port=5001 \
     udpsrc port=5001 ! \
         "application/x-rtp, payload=127, media=audio, clock-rate=48000, encoding-name=VORBIS" ! \
         rtpvorbisdepay ! \
         vorbisdec ! \
-	queue ! \
+        queue ! \
         osxaudiosink async=false
