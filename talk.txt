@@ -12,9 +12,9 @@ gst-launch \
 	queue ! \
 	glimagesink async=false \
     osxaudiosrc ! \
-        "audio/x-raw, rate=48000" ! \
 	audioconvert ! \
 	audioresample ! \
+        "audio/x-raw, rate=48000" ! \
         vorbisenc ! \
 	queue ! \
 	rtpvorbispay config-interval=1 ! \
