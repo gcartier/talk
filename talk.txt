@@ -1,6 +1,6 @@
 gst-launch \
     avfvideosrc ! \
-        video/x-raw,width=640,height=480 ! \
+        video/x-raw,width=1280,height=720 ! \
 	x264enc pass=qual quantizer=20 tune=zerolatency ! \
 	queue ! \
 	rtph264pay ! \
