@@ -3,10 +3,19 @@ gst-launch \
         video/x-raw,width=640,height=480 ! \
 	x264enc pass=qual quantizer=20 tune=zerolatency ! \
 	queue ! \
-	rtph264pay ! udpsink host=$UDPDEST port=1234 \
-    udpsrc port=1234 ! \
+	rtph264pay ! \
+        udpsink host=$UDPDEST port=5000 \
+    udpsrc port=5000 ! \
         "application/x-rtp, payload=127" ! \
 	rtph264depay ! \
 	avdec_h264 ! \
 	queue ! \
-	glimagesink async=false
+	glimagesink async=false \
+    osxaudiosrc ! \
+        vorbisenc ! \
+	queue ! \
+        udpsink host=$UDPDEST port=5001 \
+    udpsrc port=5001 ! \
+        vorbisdec ! \
+	queue ! \
+        osxaudiosink async=false
