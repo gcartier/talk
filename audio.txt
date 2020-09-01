@@ -7,7 +7,7 @@ probe="webrtcechoprobe"
 gst-launch \
     osxaudiosrc ! \
         audioresample ! \
-	$dsp ! \
+        $dsp ! \
         audioconvert ! \
         audioresample ! \
         "audio/x-raw, format=F32LE, layout=interleaved, rate=48000, channels=2" ! \
@@ -22,7 +22,10 @@ gst-launch \
         audioconvert ! \
         audioresample ! \
         audio/x-raw, format=S16LE, layout=interleaved, rate=48000, channels=2 ! \
+        adder name=mix ! \
         queue ! \
         $probe ! \
         audioresample ! \
-        osxaudiosink async=false
+        osxaudiosink async=false \
+    audiotestsrc do-timestamp=true wave=silence name=silence ! \
+        mix.
