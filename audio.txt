@@ -27,5 +27,5 @@ gst-launch \
         $probe ! \
         audioresample ! \
         osxaudiosink async=false \
-    audiotestsrc do-timestamp=true wave=silence name=silence ! \
+    audiotestsrc do-timestamp=true name=silence ! \
         mix.
