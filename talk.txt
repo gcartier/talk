@@ -12,12 +12,13 @@ gst-launch \
 	queue ! \
 	glimagesink async=false \
     osxaudiosrc ! \
+        "audio/x-raw, rate=48000" ! \
         vorbisenc ! \
 	queue ! \
 	rtpvorbispay ! \
         udpsink host=$UDPDEST port=5001 \
     udpsrc port=5001 ! \
-        "application/x-rtp, payload=127, encoding-name=VORBIS" ! \
+        "application/x-rtp, payload=127, media=audio, clock-rate=48000, encoding-name=VORBIS" ! \
         rtpvorbisdepay ! \
         vorbisdec ! \
 	queue ! \
